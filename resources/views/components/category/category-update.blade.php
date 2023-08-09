@@ -9,6 +9,14 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-12 p-1">
+                                <label class="form-label">Type *</label>
+                                <select name="type" id="categoryTypeUpdate" class="form-control">
+                                    <option value="">--select--</option>
+                                    <option value="Income">Income</option>
+                                    <option value="Expense">Expense</option>
+                                </select>
+                            </div>
+                            <div class="col-12 p-1">
                                 <label class="form-label">Category Name *</label>
                                 <input type="text" class="form-control" id="categoryNameUpdate">
                                 <input class="d-none" id="updateID">
@@ -34,21 +42,25 @@
         showLoader();
         let res=await axios.post("/category-by-id",{id:id})
         hideLoader();
+        document.getElementById('categoryTypeUpdate').value=res.data['type'];
         document.getElementById('categoryNameUpdate').value=res.data['name'];
     }
 
     async function Update() {
 
+        let categoryType = document.getElementById('categoryTypeUpdate').value;
         let categoryName = document.getElementById('categoryNameUpdate').value;
         let updateID = document.getElementById('updateID').value;
 
-        if (categoryName.length === 0) {
+        if (categoryType.length === 0) {
+            errorToast("Category Type Required !")
+        }else if (categoryName.length === 0) {
             errorToast("Category Required !")
         }
         else{
             document.getElementById('update-modal-close').click();
             showLoader();
-            let res = await axios.post("/update-category",{name:categoryName,id:updateID})
+            let res = await axios.post("/update-category",{type:categoryType,name:categoryName,id:updateID})
             hideLoader();
 
             if(res.status===200 && res.data===1){

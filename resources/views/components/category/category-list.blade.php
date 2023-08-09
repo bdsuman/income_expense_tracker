@@ -16,6 +16,7 @@
                 <thead>
                 <tr class="bg-light">
                     <th>No</th>
+                    <th>Type</th>
                     <th>Category</th>
                     <th>Action</th>
                 </tr>
@@ -51,6 +52,7 @@ async function getList() {
     res.data.forEach(function (item,index) {
         let row=`<tr>
                     <td>${index+1}</td>
+                    <td>${item['type']}</td>
                     <td>${item['name']}</td>
                     <td>
                         <button data-id="${item['id']}" class="btn editBtn btn-sm btn-outline-success">Edit</button>
