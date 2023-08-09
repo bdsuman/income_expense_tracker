@@ -1,12 +1,14 @@
 <?php
 namespace App\Http\Controllers;
-use App\Helper\JWTToken;
-use App\Mail\OTPMail;
-use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
+use App\Models\User;
+use App\Mail\OTPMail;
+use App\Helper\JWTToken;
 use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -42,7 +44,7 @@ class UserController extends Controller
                 'lastName' => $request->input('lastName'),
                 'email' => $request->input('email'),
                 'mobile' => $request->input('mobile'),
-                'password' => $request->input('password'),
+                'password' => Hash::make($request->input('password')),
             ]);
             return response()->json([
                 'status' => 'success',
@@ -59,7 +61,8 @@ class UserController extends Controller
     }
 
     function UserLogin(Request $request){
-       $count=User::where('email','=',$request->input('email'))
+        //dd($request->all());
+       /*$count=User::where('email','=',$request->input('email'))
             ->where('password','=',$request->input('password'))
             ->select('id')->first();
 
@@ -77,7 +80,26 @@ class UserController extends Controller
                'message' => 'unauthorized'
            ],200);
 
-       }
+       }*/
+
+       $data = [
+        'email' => $request->email,
+        'password' => $request->password
+    ];
+
+    if (Auth::attempt($data,true)) {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User Login Successful',
+        ],200);
+        // return redirect()->route('home');
+    } else {
+        return response()->json([
+            'status' => 'failed',
+            'message' => 'unauthorized'
+        ],200);
+        //return redirect()->back();
+    }
 
     }
 
@@ -151,7 +173,9 @@ class UserController extends Controller
     }
 
     function UserLogout(){
-        return redirect('/userLogin')->cookie('token','',-1);
+        Auth::logout();
+        return redirect()->route('login');
+        // return redirect('/userLogin')->cookie('token','',-1);
     }
 
 
