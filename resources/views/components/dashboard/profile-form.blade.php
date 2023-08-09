@@ -52,7 +52,7 @@
             document.getElementById('firstName').value=data['firstName'];
             document.getElementById('lastName').value=data['lastName'];
             document.getElementById('mobile').value=data['mobile'];
-            document.getElementById('password').value=data['password'];
+            // document.getElementById('password').value=data['password'];
         }
         else{
             errorToast(res.data['message'])

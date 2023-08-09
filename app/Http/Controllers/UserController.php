@@ -179,9 +179,9 @@ class UserController extends Controller
     }
 
 
-    function UserProfile(Request $request){
-        $email=$request->header('email');
-        $user=User::where('email','=',$email)->first();
+    function UserProfile(){
+         
+        $user=User::find(auth()->id());
         return response()->json([
             'status' => 'success',
             'message' => 'Request Successful',
@@ -195,7 +195,7 @@ class UserController extends Controller
             $firstName=$request->input('firstName');
             $lastName=$request->input('lastName');
             $mobile=$request->input('mobile');
-            $password=$request->input('password');
+            $password=Hash::make($request->input('password'));
             User::where('email','=',$email)->update([
                 'firstName'=>$firstName,
                 'lastName'=>$lastName,
