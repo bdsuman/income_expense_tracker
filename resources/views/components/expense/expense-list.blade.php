@@ -4,7 +4,7 @@
         <div class="card px-5 py-5">
             <div class="row justify-content-between ">
                 <div class="align-items-center col">
-                    <h6>Category</h6>
+                    <h6>Expense List</h6>
                 </div>
                 <div class="align-items-center col">
                     <button data-bs-toggle="modal" data-bs-target="#create-modal" class="float-end btn m-0 btn-sm bg-gradient-primary">Create</button>
@@ -16,8 +16,10 @@
                 <thead>
                 <tr class="bg-light">
                     <th>No</th>
-                    <th>Type</th>
+                    <th>Date</th>
                     <th>Category</th>
+                    <th>Amount</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -40,7 +42,7 @@ async function getList() {
 
 
     showLoader();
-    let res=await axios.get("/list-category");
+    let res=await axios.get("/list-expense");
     hideLoader();
 
     let tableList=$("#tableList");
@@ -50,10 +52,13 @@ async function getList() {
     tableList.empty();
 
     res.data.forEach(function (item,index) {
+        // console.log(item)
         let row=`<tr>
                     <td>${index+1}</td>
-                    <td>${item['type']}</td>
-                    <td>${item['name']}</td>
+                    <td>${item['date']}</td>
+                    <td>${item['category']['name']}</td>
+                    <td>${item['amount']}</td>
+                    <td>${item['description']??''}</td>
                     <td>
                         <button data-id="${item['id']}" class="btn editBtn btn-sm btn-outline-success">Edit</button>
                         <button data-id="${item['id']}" class="btn deleteBtn btn-sm btn-outline-danger">Delete</button>

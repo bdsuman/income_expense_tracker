@@ -54,5 +54,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post("/update-income",[IncomeController::class,'IncomeUpdate']);
     Route::post("/income-by-id",[IncomeController::class,'IncomeByID']);
 
+    // Expense API
+    Route::post("/create-expense",[ExpenseController::class,'ExpenseCreate']);
+    Route::get("/list-expense",[ExpenseController::class,'ExpenseList']);
+    Route::post("/delete-expense",[ExpenseController::class,'ExpenseDelete']);
+    Route::post("/update-expense",[ExpenseController::class,'ExpenseUpdate']);
+    Route::post("/expense-by-id",[ExpenseController::class,'ExpenseByID']);
+
 
 });
