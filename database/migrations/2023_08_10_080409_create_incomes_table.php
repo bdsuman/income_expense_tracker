@@ -11,24 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('incomes', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->double('amount');
+            $table->string('description',255)->nullable();
+
+            $table->unsignedBigInteger('categorie_id');
+            $table->foreign('categorie_id')->references('id')->on('categories')
+                ->cascadeOnUpdate()->restrictOnDelete();
 
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id');
-
             $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnUpdate()->restrictOnDelete();
-
-            $table->foreign('category_id')->references('id')->on('categories')
-                ->cascadeOnUpdate()->restrictOnDelete();
-
-
-            $table->string('name',100);
-            $table->string('price',50);
-            $table->string('unit',50);
-            $table->string('img_url',100);
-
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
@@ -40,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('incomes');
     }
 };

@@ -11,23 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-
-
-            $table->string('total',50);
-            $table->string('discount',50);
-            $table->string('vat',50);
-            $table->string('payable',50);
-
-
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('customer_id');
-
-            $table->foreign('user_id')->references('id')->on('users')
+            $table->date('date');
+            $table->double('amount');
+            $table->string('description',255)->nullable();
+            
+            $table->unsignedBigInteger('categorie_id');
+            $table->foreign('categorie_id')->references('id')->on('categories')
                 ->cascadeOnUpdate()->restrictOnDelete();
 
-            $table->foreign('customer_id')->references('id')->on('customers')
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')
                 ->cascadeOnUpdate()->restrictOnDelete();
 
             $table->timestamp('created_at')->useCurrent();
@@ -40,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('expenses');
     }
 };
