@@ -4,6 +4,7 @@ use App\Models\Expense;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -34,6 +35,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/categoryPage',[CategoryController::class,'CategoryPage']);
     Route::get('/incomePage',[IncomeController::class,'IncomePage']);
     Route::get('/expensePage',[ExpenseController::class,'ExpensePage']);
+    Route::get('/reportPage',[ReportController::class,'index']);
    
 
     Route::post('/reset-password',[UserController::class,'ResetPassword']);
