@@ -4,20 +4,22 @@
         <div class="card px-5 py-5">
             <div class="row justify-content-between ">
                 <div class="align-items-center col">
-                    <h4>Product</h4>
+                    <h6>Income</h6>
                 </div>
                 <div class="align-items-center col">
                     <button data-bs-toggle="modal" data-bs-target="#create-modal" class="float-end btn m-0 btn-sm bg-gradient-primary">Create</button>
                 </div>
             </div>
-            <hr class="bg-dark "/>
-            <table class="table" id="tableData">
+            <hr class="bg-secondary"/>
+            <div class="table-responsive">
+            <table class="table  table-flush" id="tableData">
                 <thead>
                 <tr class="bg-light">
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Unit</th>
+                    <th>No</th>
+                    <th>Date</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Description</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -25,6 +27,7 @@
 
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </div>
@@ -39,7 +42,7 @@ async function getList() {
 
 
     showLoader();
-    let res=await axios.get("/list-product");
+    let res=await axios.get("/list-income");
     hideLoader();
 
     let tableList=$("#tableList");
@@ -49,14 +52,16 @@ async function getList() {
     tableList.empty();
 
     res.data.forEach(function (item,index) {
+        // console.log(item)
         let row=`<tr>
-                    <td><img class="w-15 h-auto" alt="" src="${item['img_url']}"></td>
-                    <td>${item['name']}</td>
-                    <td>${item['price']}</td>
-                    <td>${item['unit']}</td>
+                    <td>${index+1}</td>
+                    <td>${item['date']}</td>
+                    <td>${item['category']['name']}</td>
+                    <td>${item['amount']}</td>
+                    <td>${item['description']??''}</td>
                     <td>
-                        <button data-path="${item['img_url']}" data-id="${item['id']}" class="btn editBtn btn-sm btn-outline-success">Edit</button>
-                        <button data-path="${item['img_url']}" data-id="${item['id']}" class="btn deleteBtn btn-sm btn-outline-danger">Delete</button>
+                        <button data-id="${item['id']}" class="btn editBtn btn-sm btn-outline-success">Edit</button>
+                        <button data-id="${item['id']}" class="btn deleteBtn btn-sm btn-outline-danger">Delete</button>
                     </td>
                  </tr>`
         tableList.append(row)
@@ -64,25 +69,22 @@ async function getList() {
 
     $('.editBtn').on('click', async function () {
            let id= $(this).data('id');
-           let filePath= $(this).data('path');
-           await FillUpUpdateForm(id,filePath)
+           await FillUpUpdateForm(id)
            $("#update-modal").modal('show');
+
+
     })
 
     $('.deleteBtn').on('click',function () {
         let id= $(this).data('id');
-        let path= $(this).data('path');
-
         $("#delete-modal").modal('show');
         $("#deleteID").val(id);
-        $("#deleteFilePath").val(path)
-
     })
 
     new DataTable('#tableData',{
-        order:[[0,'desc']],
-        lengthMenu:[5,10,15,20,30]
-    });
+       order:[[0,'desc']],
+       lengthMenu:[5,10,15,20,30]
+   });
 
 }
 

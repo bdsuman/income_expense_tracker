@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\UserController;
+use App\Models\Expense;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/',function(){
     return redirect('/userLogin');
@@ -32,14 +32,14 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('/userProfile',[UserController::class,'ProfilePage']);
    
     Route::get('/categoryPage',[CategoryController::class,'CategoryPage']);
-    Route::get('/customerPage',[CustomerController::class,'CustomerPage']);
-    Route::get('/productPage',[ProductController::class,'ProductPage']);
-    Route::get('/invoicePage',[InvoiceController::class,'InvoicePage']);
-    Route::get('/salePage',[InvoiceController::class,'SalePage']);
+    Route::get('/incomePage',[IncomeController::class,'IncomePage']);
+    Route::get('/expensePage',[ExpenseController::class,'ExpensePage']);
+   
 
     Route::post('/reset-password',[UserController::class,'ResetPassword']);
     Route::get('/user-profile',[UserController::class,'UserProfile']);
     Route::post('/user-update',[UserController::class,'UpdateProfile']);
+
     // Category API
     Route::post("/create-category",[CategoryController::class,'CategoryCreate']);
     Route::get("/list-category",[CategoryController::class,'CategoryList']);
@@ -47,27 +47,12 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post("/update-category",[CategoryController::class,'CategoryUpdate']);
     Route::post("/category-by-id",[CategoryController::class,'CategoryByID']);
 
-
-    // Customer API
-    Route::post("/create-customer",[CustomerController::class,'CustomerCreate']);
-    Route::get("/list-customer",[CustomerController::class,'CustomerList']);
-    Route::post("/delete-customer",[CustomerController::class,'CustomerDelete']);
-    Route::post("/update-customer",[CustomerController::class,'CustomerUpdate']);
-    Route::post("/customer-by-id",[CustomerController::class,'CustomerByID']);
-
-
-
-    // Invoice
-    Route::post("/invoice-create",[InvoiceController::class,'invoiceCreate']);
-    Route::get("/invoice-select",[InvoiceController::class,'invoiceSelect']);
-    Route::get("/invoice-delete",[InvoiceController::class,'invoiceDelete']);
-
-    // Product API
-    Route::post("/create-product",[ProductController::class,'CreateProduct']);
-    Route::post("/delete-product",[ProductController::class,'DeleteProduct']);
-    Route::post("/update-product",[ProductController::class,'UpdateProduct']);
-    Route::get("/list-product",[ProductController::class,'ProductList']);
-    Route::post("/product-by-id",[ProductController::class,'ProductByID']);
+    // Income API
+    Route::post("/create-income",[IncomeController::class,'IncomeCreate']);
+    Route::get("/list-income",[IncomeController::class,'IncomeList']);
+    Route::post("/delete-income",[IncomeController::class,'IncomeDelete']);
+    Route::post("/update-income",[IncomeController::class,'IncomeUpdate']);
+    Route::post("/income-by-id",[IncomeController::class,'IncomeByID']);
 
 
 });
